@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#ffb6c1, #ffe4ec);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', cursive;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  z-index: 2;
+}
+
+h1 {
+  color: #ff2f68;
+  font-size: 2.4rem;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+#yes {
+  background: #ff2f68;
+  color: white;
+  font-size: 1.8rem;
+}
+
+#no {
+  background: white;
+  color: #ff2f68;
+  position: absolute;
+  font-size: 0.9rem;
+}
+
+/* ❤️ HEART CONTAINER */
+.heart-wrapper {
+  position: relative;
+  width: 160px;
+  height: 140px;
+  margin: 30px auto;
+  display: none;
+}
+
+/* ❤️ PHOTO HEART (BOTTOM LAYER) */
+.photo-heart {
+  position: absolute;
+  width: 160px;
+  height: 140px;
+  transform: rotate(-45deg);
+  overflow: hidden;
+}
+
+.photo-heart::before,
+.photo-heart::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 140px;
+  background: url("us.jpg") center/cover no-repeat;
+  border-radius: 50%;
+}
+
+.photo-heart::before {
+  top: -70px;
+  left: 0;
+}
+
+.photo-heart::after {
+  left: 70px;
+  top: 0;
+}
+
+/* ❤️ SOLID HEART (TOP LAYER) */
+.cover-heart {
+  position: absolute;
+  width: 160px;
+  height: 140px;
+  background: #ff2f68;
+  transform: rotate(-45deg);
+  animation: pulse 1.5s infinite;
+}
+
+.cover-heart::before,
+.cover-heart::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 140px;
+  background: #ff2f68;
+  border-radius: 50%;
+}
+
+.cover-heart::before {
+  top: -70px;
+  left: 0;
+}
+
+.cover-heart::after {
+  left: 70px;
+  top: 0;
+}
+
+/* 💗 MELTING EFFECT */
+.melt {
+  animation: melt 2.5s ease forwards;
+}
+
+@keyframes melt {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: rotate(-45deg) translateY(40px) scale(0.9);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: rotate(-45deg) scale(1); }
+  50% { transform: rotate(-45deg) scale(1.05); }
+  100% { transform: rotate(-45deg) scale(1); }
+}
+
+/* 💕 LOVE TEXT */
+#loveText {
+  display: none;
+  font-size: 2rem;
+  color: #ff2f68;
+  animation: beat 1.5s infinite;
+}
+
+@keyframes beat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* 🎈 BALLOONS */
+.balloon {
+  position: fixed;
+  bottom: -100px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float linear;
+}
+
+@keyframes float {
+  to {
+    transform: translate(
+      calc(-50px + 100vw * var(--x)),
+      -130vh
+    );
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Will you be my Valentine?</h1>
+  <button id="yes">yeesss❤️</button>
+  <button id="no">no</button>
+
+  <div class="heart-wrapper" id="heart">
+    <div class="photo-heart"></div>
+    <div class="cover-heart" id="coverHeart"></div>
+  </div>
+
+  <div id="loveText"></div>
+</div>
+
+<audio id="music" src="her.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const heart = document.getElementById("heart");
+const coverHeart = document.getElementById("coverHeart");
+const loveText = document.getElementById("loveText");
+const music = document.getElementById("music");
+
+/* 😈 NO BUTTON RUNS */
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random() * 80 + "vw";
+  noBtn.style.top = Math.random() * 80 + "vh";
+});
+
+/* ❤️ YES CLICK */
+yesBtn.addEventListener("click", () => {
+  music.play();
+  heart.style.display = "block";
+
+  setTimeout(() => {
+    coverHeart.classList.add("melt");
+  }, 1200);
+
+  setTimeout(() => {
+    typeText("I love you 💕");
+  }, 2500);
+
+  for (let i = 0; i < 120; i++) {
+    balloon();
+    confetti();
+  }
+});
+
+/* 💕 TYPE TEXT */
+function typeText(text) {
+  loveText.style.display = "block";
+  loveText.textContent = "";
+  let i = 0;
+  const t = setInterval(() => {
+    loveText.textContent += text[i++];
+    if (i === text.length) clearInterval(t);
+  }, 120);
+}
+
+/* 🎈 BALLOONS */
+function balloon() {
+  const b = document.createElement("div");
+  const size = Math.random() * 40 + 30;
+  const duration = Math.random() * 5 + 4;
+
+  b.className = "balloon";
+  b.style.width = size + "px";
+  b.style.height = size * 1.3 + "px";
+  b.style.left = Math.random() * 100 + "vw";
+  b.style.background = `hsl(${Math.random()*360},80%,75%)`;
+  b.style.animationDuration = duration + "s";
+  b.style.setProperty("--x", Math.random());
+
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), duration * 1000);
+}
+
+/* 🎉 CONFETTI BURST */
+function confetti() {
+  const c = document.createElement("div");
+  const size = Math.random() * 8 + 6;
+  const angle = Math.random() * Math.PI * 2;
+  const dist = Math.random() * 300 + 100;
+
+  c.style.position = "fixed";
+  c.style.width = size + "px";
+  c.style.height = size + "px";
+  c.style.background = Math.random() > 0.5 ? "#ff2f68" : "#ff9acb";
+  c.style.left = innerWidth / 2 + "px";
+  c.style.top = innerHeight / 2 + "px";
+  c.style.borderRadius = "50%";
+
+  document.body.appendChild(c);
+
+  c.animate([
+    { transform: "translate(0,0)", opacity: 1 },
+    { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`, opacity: 0 }
+  ], { duration: 2000 });
+
+  setTimeout(() => c.remove(), 2000);
+}
+</script
