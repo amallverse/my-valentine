@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#ffb6c1, #ffe4ec);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', cursive;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  color: #ff2f68;
+  font-size: 2.3rem;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+#yes {
+  background: #ff2f68;
+  color: white;
+  font-size: 1.7rem;
+}
+
+#no {
+  background: white;
+  color: #ff2f68;
+  position: absolute;
+  font-size: 0.9rem;
+}
+
+/* ❤️ HEART CONTAINER */
+#heartScene {
+  display: none;
+  width: 220px;
+  margin: 30px auto;
+}
+
+/* 💓 HEART BEAT */
+.beat {
+  animation: beat 1.4s infinite;
+}
+
+@keyframes beat {
+  50% { transform: scale(1.06); }
+}
+
+/* 💗 MELT */
+.melt {
+  animation: melt 3s ease forwards;
+}
+
+@keyframes melt {
+  to {
+    opacity: 0;
+    filter: blur(18px);
+    transform: translateY(40px) scale(0.9);
+  }
+}
+
+/* 💕 TEXT */
+#loveText {
+  display: none;
+  font-size: 2rem;
+  color: #ff2f68;
+  animation: beat 1.5s infinite;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Will you be my Valentine?</h1>
+  <button id="yes">yeesss❤️</button>
+  <button id="no">no</button>
+
+  <!-- ❤️ SVG HEART -->
+  <svg id="heartScene" viewBox="0 0 512 512">
+    <defs>
+      <!-- Heart shape -->
+      <clipPath id="heartClip">
+        <path d="M256 464s-192-112-192-272c0-70 54-128 128-128
+        44 0 84 22 108 56
+        24-34 64-56 108-56
+        74 0 128 58 128 128
+        0 160-192 272-192 272z"/>
+      </clipPath>
+
+      <!-- 3D shadow -->
+      <filter id="shadow3d" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000" flood-opacity="0.25"/>
+      </filter>
+    </defs>
+
+    <!-- PHOTO HEART (BOTTOM) -->
+    <image
+      href="us.jpg"
+      width="512"
+      height="512"
+      clip-path="url(#heartClip)"
+    />
+
+    <!-- SOLID HEART (TOP) -->
+    <path
+      id="coverHeart"
+      d="M256 464s-192-112-192-272c0-70 54-128 128-128
+      44 0 84 22 108 56
+      24-34 64-56 108-56
+      74 0 128 58 128 128
+      0 160-192 272-192 272z"
+      fill="#ff2f68"
+      filter="url(#shadow3d)"
+    />
+  </svg>
+
+  <div id="loveText">I love you 💕</div>
+</div>
+
+<audio id="music" src="her.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const heartScene = document.getElementById("heartScene");
+const coverHeart = document.getElementById("coverHeart");
+const loveText = document.getElementById("loveText");
+const music = document.getElementById("music");
+
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random() * 80 + "vw";
+  noBtn.style.top = Math.random() * 80 + "vh";
+});
+
+yesBtn.addEventListener("click", () => {
+  music.play();
+
+  heartScene.style.display = "block";
+  heartScene.classList.add("beat");
+
+  setTimeout(() => {
+    coverHeart.classList.add("melt");
+  }, 1200);
+
+  setTimeout(() => {
+    loveText.style.display = "block";
+  }, 2600);
+});
+</script>
+
+</body>
+</html>
